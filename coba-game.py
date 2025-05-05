@@ -91,6 +91,20 @@ level_difficulty = [
     "Extreme"
 ]
 
+#Asset
+sprite_sheet = pygame.image.load("E:/vscode/TUBES PBO GACOR/tiles_page1.png").convert_alpha()
+
+#Ukuran Tile
+TILE_WIDTH = 32
+TILE_HEIGHT = 32
+
+#Fungsi ambil tile berdasarkan koordinat grid
+def get_tile(x, y):
+    rect = pygame.Rect(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT)
+    tile = pygame.Surface((TILE_WIDTH, TILE_HEIGHT), pygame.SCRALPHA)
+    tile.blit(sprite_sheet, (0, 0), rect)
+    return tile
+
 # Load images (placeholder rectangles)
 def load_image(name, size=None):
     surf = pygame.Surface((PLAYER_WIDTH, PLAYER_HEIGHT)) if name == "player" else pygame.Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
@@ -204,7 +218,8 @@ class Platform(pygame.sprite.Sprite):
         self.id = Platform.next_id
         Platform.next_id += 1
         if platform_type == "normal":
-            self.image = platform_img
+            self.image = get_tile(0, 8)
+            self.rect = self.image.get_rect(topleft=(x, y))
         elif platform_type == "trampoline":
             self.image = trampoline_img
         elif platform_type == "fragile":
