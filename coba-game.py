@@ -3,6 +3,8 @@ import random
 import sys
 import time
 
+import pygame.image
+
 # Initialize pygame
 pygame.init()
 
@@ -52,15 +54,15 @@ MOVE_SPEED = 5
 GRAVITY = 0.3
 
 # Platform settings
-PLATFORM_WIDTH = 100
-PLATFORM_HEIGHT = 20
+PLATFORM_WIDTH = 64
+PLATFORM_HEIGHT = 32
 PLATFORM_SPEED = 2
 TRAMPOLINE_BOOST = -20
 # Mengurangi jarak maksimum antar platform
 MAX_PLATFORM_GAP = 100  # Diturunkan dari 120 agar lebih terjangkau
 
 # Game progress tracking
-max_level_unlocked = 1
+max_level_unlocked = 4
 current_level = 1
 score = 0
 high_scores = [0, 0, 0, 0]
@@ -90,6 +92,26 @@ level_difficulty = [
     "Hard",
     "Extreme"
 ]
+
+#Asset
+sprite_sheet1 = pygame.image.load("E:/vscode/TUBES PBO GACOR/tiles_page1.png").convert_alpha()
+sprite_sheet2 = pygame.image.load("E:/vscode/TUBES PBO GACOR/tiles_page3.png").convert_alpha()
+
+#Ukuran Tile
+TILE_WIDTH = 32
+TILE_HEIGHT = 32
+
+#Fungsi ambil tile berdasarkan koordinat grid
+def get_tile(x, y, sheet=1):
+    if sheet == 1:
+        sheet_img = sprite_sheet1
+    elif sheet == 2:
+        sheet_img = sprite_sheet2
+
+    rect = pygame.Rect(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT)
+    tile = pygame.Surface((TILE_WIDTH, TILE_HEIGHT), pygame.SRCALPHA)
+    tile.blit(sheet_img, (0, 0), rect)
+    return tile
 
 # Load images (placeholder rectangles)
 def load_image(name, size=None):
@@ -204,11 +226,15 @@ class Platform(pygame.sprite.Sprite):
         self.id = Platform.next_id
         Platform.next_id += 1
         if platform_type == "normal":
-            self.image = platform_img
+            self.image = get_tile(3, 8, sheet=1)
+            self.image = pygame.transform.scale(self.image, (50, 50))
+            self.rect = self.image.get_rect(topleft=(x, y))
         elif platform_type == "trampoline":
             self.image = trampoline_img
         elif platform_type == "fragile":
-            self.image = fragile_img
+            self.image = get_tile(11, 8, sheet=2)
+            self.image = pygame.transform.scale(self.image, (50, 50))
+            self.rect = self.image.get_rect(topleft=(x, y))
         elif platform_type == "moving":
             self.image = moving_img
         self.rect = self.image.get_rect()
@@ -240,7 +266,7 @@ class Platform(pygame.sprite.Sprite):
 
     def break_platform(self):
         if self.platform_type == "fragile":
-            self.break_timer = 30
+            self.break_timer = 1 
 
 # Raindrop class for forest level
 class Raindrop(pygame.sprite.Sprite):
