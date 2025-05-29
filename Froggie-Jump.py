@@ -8,6 +8,7 @@ import pygame.image
 
 # Initialize pygame
 pygame.init()
+pygame.mixer.init()
 
 # Ukuran layar game
 SCREEN_WIDTH = 800
@@ -109,7 +110,6 @@ back_button_img = pygame.image.load("E:/vscode/TUBES PBO GACOR/back button2.png"
 TILE_WIDTH = 32
 TILE_HEIGHT = 32
 
-
 sprite_sheet6 = pygame.image.load("E:/vscode/TUBES PBO GACOR/green_frog_spritesheet_.png").convert_alpha()
 frame_width = 60
 frame_height = 64
@@ -208,6 +208,7 @@ class Player(pygame.sprite.Sprite):
 
         # Terapkan gravitasi ke kecepatan vertikal dan update posisi y
         self.velocity_y += GRAVITY
+        previous_bottom = self.rect.bottom
         self.rect.y += self.velocity_y
 
         # Deteksi jika pemain tidak bergerak ke atas dalam waktu lama
@@ -230,7 +231,7 @@ class Player(pygame.sprite.Sprite):
 
         # Deteksi tabrakan dengan platform saat jatuh
         for platform in pygame.sprite.spritecollide(self, platforms, False):
-            if self.velocity_y > 0 and self.rect.bottom > platform.rect.top and self.rect.bottom < platform.rect.top + 30:
+            if self.velocity_y > 0 and previous_bottom <= platform.rect.top and self.rect.bottom >= platform.rect.top:
                 self.rect.bottom = platform.rect.top
                 # Lompatan trampoline lebih tinggi
                 if platform.platform_type == "trampoline":
@@ -425,6 +426,32 @@ class Game:
         self.last_platform_y = 0
         self.emergency_platforms = []
         self.back_button_img = back_button_img
+        self.menu_music_file = "E:/vscode/TUBES PBO GACOR/sound menu.mp3"
+        self.level_music_files = [
+            "E:/vscode/TUBES PBO GACOR/level1_music.mp3",
+            "E:/vscode/TUBES PBO GACOR/level2_music.mp3",
+            "E:/vscode/TUBES PBO GACOR/level3_music.mp3",
+            "E:/vscode/TUBES PBO GACOR/level4_music.mp3"
+        ]
+        self.current_music = None
+
+    def play_music_for_state(self):
+        if self.state == STATE_MENU or self.state == STATE_LEVEL_SELECT:
+            music_file = self.menu_music_file
+        elif self.state == STATE_GAME or STATE_COUNTDOWN:
+            music_file = self.level_music_files[self.level - 1]
+        else:
+            music_file = None
+            
+
+        if music_file and music_file != self.current_music:
+            pygame.mixer.music.load(music_file)
+            pygame.mixer.music.set_volume(0.5)
+            pygame.mixer.music.play(-1)
+            self.current_music = music_file
+        elif music_file is None:
+            pygame.mixer.music.stop()
+            self.current_music = None
 
     def reset_game(self):
         """
@@ -584,6 +611,7 @@ class Game:
         """
         Update game setiap frame berdasarkan state saat ini.
         """
+        self.play_music_for_state()
         if self.state == STATE_COUNTDOWN:
             current_time = time.time()
             if current_time - self.last_countdown_time >= 1:
