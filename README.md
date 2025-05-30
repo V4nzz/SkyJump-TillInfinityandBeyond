@@ -23,51 +23,8 @@ Untuk menjalankan game ini, Anda membutuhkan:
 11. Anda juga dapat memilih level melalui menu "Level Select" jika level sudah dibuka.
 
 ## UML Class Diagram
-```
-+------------------+
-|      Game        |
-+------------------+
-| - state          |
-| - level          |
-| - player         |
-| - platforms      |
-| - raindrops      |
-| - ...            |
-+------------------+
-| + update()       |
-| + draw_menu()    |
-| + draw_game()    |
-| + handle_input() |
-| + reset_game()   |
-| + start_level()  |
-+------------------+
+![UML Class Diagram](main/UML_Froggie_Jump.jpeg)
 
-      1
-      |
-      * 
-+------------------+     +------------------+
-|     Player       |     |    Platform      |
-+------------------+     +------------------+
-| - rect           |     | - rect           |
-| - velocity_y     |     | - platform_type  |
-| - is_jumping     |     | - move_direction |
-| - ...            |     | - to_remove      |
-+------------------+     +------------------+
-| + update()       |     | + update()       |
-| + find_closest_  |     +------------------+
-|platform_above() +|
-|break_platform()  |
-+------------------+
-
-+------------------+
-|    Raindrop      |
-+------------------+
-| - rect           |
-| - speed          |
-+------------------+
-| + update()       |
-+------------------+
-```
 ## Kontributor Pengembangan Aplikasi
 Ivan Nandira Mangunang (123140094)
 Memory Simanjuntak (123140095)
