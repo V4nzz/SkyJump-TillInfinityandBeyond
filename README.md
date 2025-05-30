@@ -23,7 +23,7 @@ Untuk menjalankan game ini, Anda membutuhkan:
 11. Anda juga dapat memilih level melalui menu "Level Select" jika level sudah dibuka.
 
 ## UML Class Diagram
-![UML Class Diagram](main/UML_Froggie_Jump.jpeg)
+![UML Class Diagram](UMLFroggieJump.jpeg)
 
 ## Kontributor Pengembangan Aplikasi
 Ivan Nandira Mangunang (123140094)
