@@ -23,6 +23,7 @@ Untuk menjalankan game ini, Anda membutuhkan:
 11. Anda juga dapat memilih level melalui menu "Level Select" jika level sudah dibuka.
 
 ## UML Class Diagram
+```
 +------------------+
 |      Game        |
 +------------------+
@@ -53,8 +54,10 @@ Untuk menjalankan game ini, Anda membutuhkan:
 | - ...            |     | - to_remove      |
 +------------------+     +------------------+
 | + update()       |     | + update()       |
-| + find_closest_platform_above()| + break_platform() |
-+------------------+     +------------------+
+| + find_closest_  |     +------------------+
+|platform_above() +|
+|break_platform()  |
++------------------+
 
 +------------------+
 |    Raindrop      |
@@ -64,7 +67,7 @@ Untuk menjalankan game ini, Anda membutuhkan:
 +------------------+
 | + update()       |
 +------------------+
-
+```
 ## Kontributor Pengembangan Aplikasi
 Ivan Nandira Mangunang (123140094)
 Memory Simanjuntak (123140095)
